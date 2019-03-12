@@ -1,10 +1,20 @@
+// MSmoothLayout.cpp --- Win32 smooth layout
+// Copyright (C) 2019 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
+// This file is public domain software.
+
 #ifndef MSMOOTH_LAYOUT_HPP_
 #define MSMOOTH_LAYOUT_HPP_
 
 #ifndef _INC_WINDOWS
     #include <windows.h>
 #endif
-#include <map>
+#if __cplusplus >= 201103L
+    #include <unordered_map>
+#else
+    #include <map>
+#endif
+
+//////////////////////////////////////////////////////////////////////////////
 
 class MSmoothLayout
 {
@@ -21,11 +31,17 @@ public:
     void map_rect(RECT& rc, const RECT &rcFrom, const RECT &rcTo);
 
 protected:
+#if __cplusplus >= 201103L
+    typedef std::unordered_map<HWND, RECT> map_type;
+#else
     typedef std::map<HWND, RECT> map_type;
+#endif
     HWND m_hwndParent;
     RECT m_rcFrom;
     map_type m_hwnd2rc;
 };
+
+//////////////////////////////////////////////////////////////////////////////
 
 inline MSmoothLayout::MSmoothLayout()
 {
@@ -127,5 +143,7 @@ inline void MSmoothLayout::OnSize(LPCRECT prcTo)
 
     EndDeferWindowPos(hDWP);
 }
+
+//////////////////////////////////////////////////////////////////////////////
 
 #endif  // ndef MSMOOTH_LAYOUT_HPP_
