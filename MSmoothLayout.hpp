@@ -1,4 +1,4 @@
-// MSmoothLayout.cpp --- Win32 smooth layout
+// MSmoothLayout.hpp --- Win32 smooth layout
 // Copyright (C) 2019 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
 // This file is public domain software.
 
