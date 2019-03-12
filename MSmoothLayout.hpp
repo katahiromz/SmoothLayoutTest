@@ -3,7 +3,7 @@
 // This file is public domain software.
 
 #ifndef MSMOOTH_LAYOUT_HPP_
-#define MSMOOTH_LAYOUT_HPP_
+#define MSMOOTH_LAYOUT_HPP_     2   // Version 2
 
 #ifndef _INC_WINDOWS
     #include <windows.h>
@@ -28,22 +28,22 @@ public:
     void OnSize(INT x, INT y, INT cx, INT cy);
     void OnSize(INT cx, INT cy);
 
-    void map_rect(RECT& rc, const RECT &rcFrom, const RECT &rcTo);
-
 protected:
+    HWND m_hwndParent;
 #if __cplusplus >= 201103L
     typedef std::unordered_map<HWND, RECT> map_type;
 #else
     typedef std::map<HWND, RECT> map_type;
 #endif
-    HWND m_hwndParent;
     RECT m_rcFrom;
     map_type m_hwnd2rc;
+
+    void map_rect(RECT& rc, const RECT &rcFrom, const RECT &rcTo);
 };
 
 //////////////////////////////////////////////////////////////////////////////
 
-inline MSmoothLayout::MSmoothLayout()
+inline MSmoothLayout::MSmoothLayout() : m_hwndParent(NULL)
 {
 }
 
@@ -117,6 +117,9 @@ inline void MSmoothLayout::map_rect(RECT& rcItem, const RECT &rcFrom, const RECT
 
 inline void MSmoothLayout::OnSize(LPCRECT prcTo)
 {
+    if (m_hwndParent == NULL)
+        return;
+
     RECT rcTo;
     if (prcTo == NULL)
     {
